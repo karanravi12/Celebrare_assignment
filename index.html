@@ -1,18 +1,42 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Draggable Text Example</title>
-  <link rel="stylesheet" type="text/css" href="styles.css">
-</head>
-<body>
-  <div id="main-screen">
-    <div id="padded-screen">
-      <div id="draggable-text">
-        Karan Ravi
+  <head>
+    <title>Draggable Text Example</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+  </head>
+  <body>
+    <div id="main-screen">
+      <div id="padded-screen">
+        <div id="draggable-text">Karan Ravi</div>
+
+        <div id="Editing">
+          <section id="color-section">
+            <h3>Color</h3>
+            <select id="color-select" onchange="color()">
+              <option value="black">Black</option>
+              <option value="red">Red</option>
+              <option value="blue">Blue</option>
+              <option value="green">Green</option>
+              <option value="yellow">Yellow</option>
+            </select>
+          </section>
+
+          <section id="font-section">
+            <h3>Font</h3>
+            <select id="font-select" onchange="font()">
+              <option value="Arial">Arial</option>
+              <option value="Franklin Gothic">Franklin Gothic</option>
+              <option value="Times New Roman">Times New Roman</option>
+            </select>
+          </section>
+
+          <section id="size-section">
+            <h3>Size</h3>
+            <input type="number" id="size-input" onchange="changeSize()" />
+          </section>
+        </div>
       </div>
     </div>
-  </div>
-
-  <script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>

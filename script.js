@@ -1,4 +1,8 @@
-const draggableText = document.getElementById("draggable-text");
+var draggableText = document.getElementById("draggable-text");
+var colorSelect = document.getElementById("color-select");
+var fontSelect = document.getElementById("font-select");
+var sizeInput = document.getElementById("size-input");
+
 
 let isDragging = false;
 let dragOffsetX = 0;
@@ -39,4 +43,19 @@ function startDrag(event) {
 
 function stopDrag() {
   isDragging = false;
+}
+
+function color() {
+  var selectedColor = colorSelect.value;
+  draggableText.style.color = selectedColor;
+}
+
+function font() {
+  var selectedFont = fontSelect.value;
+  draggableText.style.fontFamily = selectedFont;
+}
+
+function changeSize() {
+  var enteredSize = sizeInput.value;
+  draggableText.style.fontSize = enteredSize + "px";
 }
