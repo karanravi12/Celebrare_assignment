@@ -4,48 +4,36 @@ let isDragging = false;
 let dragOffsetX = 0;
 let dragOffsetY = 0;
 
-draggableText.addEventListener("mousedown", startDrag);
-draggableText.addEventListener("touchstart", startDrag);
-
-document.addEventListener("mousemove", drag);
-document.addEventListener("mouseup", stopDrag);
-
-document.addEventListener("touchmove", drag);
-document.addEventListener("touchend", stopDrag);
+draggableText.addEventListener("pointerdown", startDrag);
+document.addEventListener("pointermove", drag);
+document.addEventListener("pointerup", stopDrag);
 
 function startDrag(event) {
   isDragging = true;
 
-  if (event.type === "mousedown") {
+  if (event.type === "pointerdown") {
     dragOffsetX = event.clientX - draggableText.offsetLeft;
     dragOffsetY = event.clientY - draggableText.offsetTop;
-  } else if (event.type === "touchstart") {
-    const touch = event.touches[0];
-    dragOffsetX = touch.clientX - draggableText.offsetLeft;
-    dragOffsetY = touch.clientY - draggableText.offsetTop;
   }
 }
 
-function drag(event) {
-  event.preventDefault(); 
+  function drag(event) {
+    event.preventDefault();
 
-  if (isDragging) {
-    let clientX, clientY;
+    if (isDragging) {
+      let clientX, clientY;
 
-    if (event.type === "mousemove") {
-      clientX = event.clientX;
-      clientY = event.clientY;
-    } else if (event.type === "touchmove") {
-      const touch = event.touches[0];
-      clientX = touch.clientX;
-      clientY = touch.clientY;
+      if (event.type === "pointermove") {
+        clientX = event.clientX;
+        clientY = event.clientY;
+      
+
+      const x = clientX - dragOffsetX;
+      const y = clientY - dragOffsetY;
+
+      draggableText.style.left = `${x}px`;
+      draggableText.style.top = `${y}px`;
     }
-
-    const x = clientX - dragOffsetX;
-    const y = clientY - dragOffsetY;
-
-    draggableText.style.left = `${x}px`;
-    draggableText.style.top = `${y}px`;
   }
 }
 
