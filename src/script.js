@@ -27,7 +27,7 @@ function startDrag(event) {
 }
 
 function drag(event) {
-  event.preventDefault(); // Prevent scrolling on touch devices
+  event.preventDefault(); 
 
   if (isDragging) {
     let clientX, clientY;
