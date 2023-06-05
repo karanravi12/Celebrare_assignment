@@ -42,61 +42,24 @@ function drag(event) {
     dragElement.style.left = `${x}px`;
     dragElement.style.top = `${y}px`;
 
-   
-    Array.from(draggableTexts).forEach((text) => {
-      if (text !== dragElement) {
-        var textRect = text.getBoundingClientRect();
-        var dragRect = dragElement.getBoundingClientRect();
-    
-        if (Math.abs(dragRect.bottom - textRect.top) < 10) {
-        
-          dragElement.style.top = `${textRect.top - dragRect.height}px`;
-          text.classList.add("aligned-top");
-          dragElement.classList.add("aligned-bottom");
-        } else if (Math.abs(dragRect.top - textRect.bottom) < 10) {
-       
-          dragElement.style.top = `${textRect.bottom}px`;
-          text.classList.add("aligned-bottom");
-          dragElement.classList.add("aligned-top");
-        } else {
-         
-          text.classList.remove("aligned-top");
-          text.classList.remove("aligned-bottom");
-          dragElement.classList.remove("aligned-top");
-          dragElement.classList.remove("aligned-bottom");
-        }
-    
-        if (Math.abs(dragRect.right - textRect.left) < 10) {
-          
-          dragElement.style.left = `${textRect.left - dragRect.width}px`;
-          text.classList.add("aligned-left");
-          dragElement.classList.add("aligned-right");
-        } else if (Math.abs(dragRect.left - textRect.right) < 10) {
-         
-          dragElement.style.left = `${textRect.right}px`;
-          text.classList.add("aligned-right");
-          dragElement.classList.add("aligned-left");
-        } else {
-         
-          text.classList.remove("aligned-left");
-          text.classList.remove("aligned-right");
-          dragElement.classList.remove("aligned-left");
-          dragElement.classList.remove("aligned-right");
-        }
-      }
-    });
-    
+    const mainScreen = document.getElementById("main-screen");
+    const mainWidth = mainScreen.clientWidth;
+    const mainHeight = mainScreen.clientHeight;
+
+    const centerThreshold = 50; 
+
+    if (Math.abs(x + dragElement.offsetWidth / 2 - mainWidth / 2) <= centerThreshold) {
+      dragElement.style.left = `${mainWidth / 2 - dragElement.offsetWidth / 2}px`;
+    }
+
+    if (Math.abs(y + dragElement.offsetHeight / 2 - mainHeight / 2) <= centerThreshold) {
+      dragElement.style.top = `${mainHeight / 2 - dragElement.offsetHeight / 2}px`;
+    }
   }
 }
 
 function stopDrag() {
   isDragging = false;
-
- 
-  Array.from(draggableTexts).forEach((text) => {
-    text.classList.remove("aligned-top");
-    text.classList.remove("aligned-bottom");
-  });
 }
 
 function color() {
