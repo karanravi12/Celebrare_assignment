@@ -62,11 +62,18 @@ function drag(event) {
         var textRect = text.getBoundingClientRect();
         var dragRect = dragElement.getBoundingClientRect();
 
-        if (Math.abs(dragRect.bottom - textRect.top) < 10) {
+        if (Math.abs(dragRect.bottom - textRect.top) < 15) {
           dragElement.style.top = `${textRect.top - dragRect.height}px`;
         } else if (Math.abs(dragRect.top - textRect.bottom) < 10) {
           dragElement.style.top = `${textRect.bottom}px`;
         }
+
+        if (Math.abs(dragRect.right - textRect.left) < 15) {
+          dragElement.style.left = `${textRect.left - dragRect.width}px`;
+        } else if (Math.abs(dragRect.left - textRect.right) < 15) {
+          dragElement.style.left = `${textRect.right}px`;
+        } 
+
       }
     });
 
