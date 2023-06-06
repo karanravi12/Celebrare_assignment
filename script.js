@@ -8,6 +8,9 @@ let dragElement = null;
 let dragOffsetX = 0;
 let dragOffsetY = 0;
 
+let changeHistory = [];
+let redoHistory = [];
+
 Array.from(draggableTexts).forEach((text) => {
   text.addEventListener("pointerdown", startDrag);
 });
@@ -23,6 +26,16 @@ function startDrag(event) {
     dragOffsetX = event.clientX - dragElement.offsetLeft;
     dragOffsetY = event.clientY - dragElement.offsetTop;
   }
+  
+  // Store current position in history
+  const previousPosition = {
+    left: dragElement.style.left,
+    top: dragElement.style.top
+  };
+  changeHistory.push(() => {
+    dragElement.style.left = previousPosition.left;
+    dragElement.style.top = previousPosition.top;
+  });
 }
 
 function drag(event) {
@@ -64,6 +77,14 @@ function drag(event) {
     if (Math.abs(y + dragElement.offsetHeight / 2 - mainHeight / 2) <= centerThreshold) {
       dragElement.style.top = `${mainHeight / 2}px`;
     }
+    const currentPosition = {
+      left: dragElement.style.left,
+      top: dragElement.style.top
+    };
+    redoHistory.push(() => {
+      dragElement.style.left = currentPosition.left;
+      dragElement.style.top = currentPosition.top;
+    });
   }
 }
 
@@ -74,20 +95,72 @@ function stopDrag() {
 function color() {
   var selectedColor = colorSelect.value;
   if (dragElement) {
+    const previousColor = dragElement.style.color;
+    const currentColor = selectedColor;
+    changeHistory.push(() => {
+      dragElement.style.color = previousColor;
+      redoHistory.push(() => {
+        dragElement.style.color = currentColor;
+      });
+      if (changeHistory.length > 10) {
+        changeHistory.shift();
+      }
+    });
     dragElement.style.color = selectedColor;
+    redoHistory = [];
   }
 }
 
 function font() {
   var selectedFont = fontSelect.value;
   if (dragElement) {
+    const previousFont = dragElement.style.fontFamily;
+    const currentFont = selectedFont;
+    changeHistory.push(() => {
+      dragElement.style.fontFamily = previousFont;
+      redoHistory.push(() => {
+        dragElement.style.fontFamily = currentFont;
+      });
+      if (changeHistory.length > 10) {
+        changeHistory.shift();
+      }
+    });
     dragElement.style.fontFamily = selectedFont;
+    redoHistory = [];
   }
 }
 
 function changeSize() {
   var enteredSize = sizeInput.value;
   if (dragElement) {
-    dragElement.style.fontSize = enteredSize + "px";
+    const previousSize = dragElement.style.fontSize;
+    const currentSize = enteredSize + "px";
+    changeHistory.push(() => {
+      dragElement.style.fontSize = previousSize;
+      redoHistory.push(() => {
+        dragElement.style.fontSize = currentSize;
+      });
+      if (changeHistory.length > 10) {
+        changeHistory.shift();
+      }
+    });
+    dragElement.style.fontSize = currentSize;
+    redoHistory = [];
+  }
+}
+
+function undo() {
+  if (changeHistory.length > 0) {
+    const undoAction = changeHistory.pop();
+    redoHistory.push(undoAction);
+    undoAction();
+  }
+}
+
+function redo() {
+  if (redoHistory.length > 0) {
+    const redoAction = redoHistory.pop();
+    changeHistory.push(redoAction);
+    redoAction();
   }
 }
