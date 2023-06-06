@@ -29,12 +29,8 @@ function drag(event) {
   event.preventDefault();
 
   if (isDragging && dragElement) {
-    let clientX, clientY;
-
-    if (event.type === "pointermove") {
-      clientX = event.clientX;
-      clientY = event.clientY;
-    }
+    let clientX = event.clientX;
+    let clientY = event.clientY;
 
     const x = clientX - dragOffsetX;
     const y = clientY - dragOffsetY;
@@ -46,14 +42,27 @@ function drag(event) {
     const mainWidth = mainScreen.clientWidth;
     const mainHeight = mainScreen.clientHeight;
 
-    const centerThreshold = 50; 
+    const centerThreshold = 25;
+
+    Array.from(draggableTexts).forEach((text) => {
+      if (text !== dragElement) {
+        var textRect = text.getBoundingClientRect();
+        var dragRect = dragElement.getBoundingClientRect();
+
+        if (Math.abs(dragRect.bottom - textRect.top) < 10) {
+          dragElement.style.top = `${textRect.top - dragRect.height}px`;
+        } else if (Math.abs(dragRect.top - textRect.bottom) < 10) {
+          dragElement.style.top = `${textRect.bottom}px`;
+        }
+      }
+    });
 
     if (Math.abs(x + dragElement.offsetWidth / 2 - mainWidth / 2) <= centerThreshold) {
-      dragElement.style.left = `${mainWidth / 2 - dragElement.offsetWidth / 2}px`;
+      dragElement.style.left = `${mainWidth / 2}px`;
     }
 
     if (Math.abs(y + dragElement.offsetHeight / 2 - mainHeight / 2) <= centerThreshold) {
-      dragElement.style.top = `${mainHeight / 2 - dragElement.offsetHeight / 2}px`;
+      dragElement.style.top = `${mainHeight / 2}px`;
     }
   }
 }
