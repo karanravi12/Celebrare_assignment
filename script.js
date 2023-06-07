@@ -27,7 +27,6 @@ function startDrag(event) {
     dragOffsetY = event.clientY - dragElement.offsetTop;
   }
   
-  // Store current position in history
   const previousPosition = {
     left: dragElement.style.left,
     top: dragElement.style.top
