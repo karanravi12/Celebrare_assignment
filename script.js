@@ -26,10 +26,10 @@ function startDrag(event) {
     dragOffsetX = event.clientX - dragElement.offsetLeft;
     dragOffsetY = event.clientY - dragElement.offsetTop;
   }
-  
+
   const previousPosition = {
     left: dragElement.style.left,
-    top: dragElement.style.top
+    top: dragElement.style.top,
   };
   changeHistory.push(() => {
     dragElement.style.left = previousPosition.left;
@@ -71,21 +71,26 @@ function drag(event) {
           dragElement.style.left = `${textRect.left - dragRect.width}px`;
         } else if (Math.abs(dragRect.left - textRect.right) < 15) {
           dragElement.style.left = `${textRect.right}px`;
-        } 
-
+        }
       }
     });
 
-    if (Math.abs(x + dragElement.offsetWidth / 2 - mainWidth / 2) <= centerThreshold) {
+    if (
+      Math.abs(x + dragElement.offsetWidth / 2 - mainWidth / 2) <=
+      centerThreshold
+    ) {
       dragElement.style.left = `${mainWidth / 2}px`;
     }
 
-    if (Math.abs(y + dragElement.offsetHeight / 2 - mainHeight / 2) <= centerThreshold) {
+    if (
+      Math.abs(y + dragElement.offsetHeight / 2 - mainHeight / 2) <=
+      centerThreshold
+    ) {
       dragElement.style.top = `${mainHeight / 2}px`;
     }
     const currentPosition = {
       left: dragElement.style.left,
-      top: dragElement.style.top
+      top: dragElement.style.top,
     };
     redoHistory.push(() => {
       dragElement.style.left = currentPosition.left;
@@ -168,5 +173,26 @@ function redo() {
     const redoAction = redoHistory.pop();
     changeHistory.push(redoAction);
     redoAction();
+  }
+}
+
+function addText() {
+  const userInput = document.getElementById("text-input").value.trim();
+  if (userInput !== "") {
+    const textId = "text" + (draggableTexts.length + 1);
+    const newElement = document.createElement("div");
+    newElement.setAttribute("class", "draggable-text");
+    newElement.setAttribute("id", textId);
+    newElement.innerText = userInput;
+
+    newElement.addEventListener("pointerdown", startDrag);
+
+    const textContainer = document.getElementById("text-container");
+    textContainer.appendChild(newElement);
+
+    document.getElementById("text-input").value = "";
+
+    const mainScreen = document.getElementById("main-screen");
+    mainScreen.appendChild(newElement);
   }
 }

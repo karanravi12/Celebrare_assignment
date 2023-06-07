@@ -7,10 +7,14 @@
   <body>
     <div id="main-screen">
       <div id="padded-screen">
-        <div class="draggable-text" id="text1">Karan Ravi</div>
-        <div class="draggable-text" id="text2">Bangalore</div>
+        <div id="text-container"></div>
 
         <div id="Editing">
+          <section id="add-text-section">
+            <input type="text" id="text-input" placeholder="Enter text" />
+            <button id="add-text-button" onclick="addText()">Add Text</button>
+          </section>
+
           <section id="color-section">
             <h3>Color</h3>
             <select id="color-select" onchange="color()">
